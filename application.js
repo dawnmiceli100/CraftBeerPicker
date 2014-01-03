@@ -32,6 +32,7 @@ $(document).ready(function() {
 	// Have to go through the entire beerIDs array because of the asynchronous nature of the AJAX request. There is no way to stop the for loop.
 	function displaySixBeers () {
 		for (var i = 0; i < beerIDs.length; i++) {	
+			$('#hourglass').addClass('hidden');
 			$.post("https://www.thebeerspot.com/api/info",
 				{"function" : "beer",
 				"dev_key" : devAPIKey,

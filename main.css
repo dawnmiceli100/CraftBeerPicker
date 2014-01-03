@@ -86,6 +86,10 @@ h3 {
 	text-align: center;
 	min-width: 1400px; 
 	height: 350px;
+/*	background-image: url('images/hourglass-filled-with-beer.jpg');
+	background-repeat: no-repeat;
+	background-position: center;
+*/	
 }
 
 #recentBeers div {
@@ -114,6 +118,15 @@ h3 {
 	display: block;
 	font-size: 18px;
 	padding-bottom: 3px;
+}
+
+#hourglass {
+	margin: 20px auto;
+	opacity: 0.5;
+}
+
+.hidden {
+	display: none;
 }
 
 
