@@ -7,8 +7,10 @@ $(document).ready(function() {
 	var devUserKey = "d7ac68693b41c4730841148beff15633";
 
 	var beerIDs = [];
+	var beerIndex;
+	var indexToDelete;
 	
-	var displayCount = 0;
+	var displayCount;
 
 	// Get 50 recently consumed beers - only need to display six, but need to account for duplicates and beers that don't have reviews
 	// Store the beer id's in the beerIDs array and then look up details with separate AJAX request
@@ -16,13 +18,13 @@ $(document).ready(function() {
 		$.post("https://www.thebeerspot.com/api/info",
 			{"function" : "drink",
 			"dev_key" : devAPIKey, 
-			"limit" : "50"},
+			"limit" : "200"},
 				function(beers) {
 					//Store beer_id's in beerIDs array -- Do not store duplicate id's
-					for (var i = 0; i < beers.length && beerIDs.length < 25; i++) {
+					for (var i = 0; i < beers.length && beerIDs.length < 200; i++) {
 						if (beerIDs.indexOf(beers[i].beer_id) === -1) {
 						beerIDs.push(beers[i].beer_id);	
-					};			
+					};
 				};	
 			displaySixBeers();					
 		});		
@@ -31,29 +33,67 @@ $(document).ready(function() {
 	// Get details of 6 recently consumed beers that have reviews and display them in divs on the page.
 	// Have to go through the entire beerIDs array because of the asynchronous nature of the AJAX request. There is no way to stop the for loop.
 	function displaySixBeers () {
-		for (var i = 0; i < beerIDs.length; i++) {	
-			$('#hourglass').addClass('hidden');
-			$.post("https://www.thebeerspot.com/api/info",
-				{"function" : "beer",
-				"dev_key" : devAPIKey,
-				"beer_id" : beerIDs[i]},
-				function(beerDetails) {
-			 		if (beerDetails[0].reviews > 0 && displayCount < 6) {
-						displayCount++;
-						$('#recentBeers').append('<div>'
-						+ '<h4>' + beerDetails[0].beer_name + '</h4>'
-						+ '<h5>' + beerDetails[0].brewery_name + '</h5>'
-						+ '<p>Style: ' + beerDetails[0].style + '</p>'
-						+ '<p>ABV: ' + beerDetails[0].abv + '</p>'
-						+ '<p>No. of Reviews: ' + beerDetails[0].reviews + '</p>'
-						+ '<p>Avg. Score: ' + Number(beerDetails[0].avg_score).toFixed(2) + '</p>'
-						+ '</div>');
-					};						
-			});	
+		displayCount = 0;
+		beerIndex = 0;
+		while (displayCount < 6 && (beerIndex < beerIDs.length)) {	
+			console.log("displayCount in while loop: ", displayCount);
+			getBeerDetails(beerIDs[beerIndex]);
+			beerIndex++;
+			
 		};		
 	};
 
+	//Get the details of a single beer
+	function getBeerDetails(id) {
+		$('#hourglass').addClass('hidden');
+		$.post("https://www.thebeerspot.com/api/info",
+				{"function" : "beer",
+				"dev_key" : devAPIKey,
+				"beer_id" : id},
+				checkBeer		
+			);	
+			console.log("displayCount after callback: ", displayCount);		
+	};
+
+	// Check the beer to see if it has any reviews. If it does, and there are not yet 6 displayed,
+	// then display the beer and update the count.
+	function checkBeer(info) {
+		if (info[0].reviews > 0 && (displayCount < 6)) {
+			displayBeer(info[0]);
+			displayCount++;
+			console.log("displayCount in checkBeer: ", displayCount);
+			console.log("beer id that was displayed: ", info[0].beer_id);
+			indexToDelete = beerIDs.indexOf(info[0].beer_id);
+			console.log("indexToDelete: ", indexToDelete);
+			beerIDs.splice(indexToDelete, 1);
+			console.log("length of beer array after splice: ", beerIDs.length);
+		};
+	};
+
+	// Display the details of a beer on the page
+	function displayBeer(beerDetails) {
+		$('#recentBeers').append('<div>'
+			+ '<h4>' + beerDetails.beer_name + '</h4>'
+			+ '<h5>' + beerDetails.brewery_name + '</h5>'
+			+ '<p>Style: ' + beerDetails.style + '</p>'
+			+ '<p>ABV: ' + beerDetails.abv + '</p>'
+			+ '<p>No. of Reviews: ' + beerDetails.reviews + '</p>'
+			+ '<p>Avg. Score: ' + Number(beerDetails.avg_score).toFixed(2) + '</p>'
+			+ '</div>');
+	
+	};
+
 	getRecentBeers();
+
+	$('#more').focus();
+
+	$('#more').click(function() {
+		
+		$('#recentBeers').empty();
+		displaySixBeers();
+
+
+	});
 
 					
 });

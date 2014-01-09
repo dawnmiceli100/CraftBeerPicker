@@ -85,7 +85,7 @@ h3 {
 	margin: 0 auto;
 	text-align: center;
 	min-width: 1400px; 
-	height: 350px;
+	height: 300px;
 /*	background-image: url('images/hourglass-filled-with-beer.jpg');
 	background-repeat: no-repeat;
 	background-position: center;
@@ -96,7 +96,7 @@ h3 {
 	height: 125px;
 	width: 400px;
 	display: inline-block;
-	margin: 20px;
+	margin: 10px;
 	vertical-align: top;
 	text-align: left;
 }
@@ -123,6 +123,19 @@ h3 {
 #hourglass {
 	margin: 20px auto;
 	opacity: 0.5;
+}
+
+#more {
+	text-align: center;
+	margin: 0 auto;
+	height: 50px;
+	width: 75px;
+	border: 2px solid #D65633;
+	border-radius: 2px;
+	display: block;
+	background-color: #grey;
+	font-size: 15px;
+	color: #D65633;
 }
 
 .hidden {
