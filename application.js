@@ -36,7 +36,6 @@ $(document).ready(function() {
 		displayCount = 0;
 		beerIndex = 0;
 		while (displayCount < 6 && (beerIndex < beerIDs.length)) {	
-			console.log("displayCount in while loop: ", displayCount);
 			getBeerDetails(beerIDs[beerIndex]);
 			beerIndex++;
 			
@@ -52,7 +51,6 @@ $(document).ready(function() {
 				"beer_id" : id},
 				checkBeer		
 			);	
-			console.log("displayCount after callback: ", displayCount);		
 	};
 
 	// Check the beer to see if it has any reviews. If it does, and there are not yet 6 displayed,
@@ -61,12 +59,8 @@ $(document).ready(function() {
 		if (info[0].reviews > 0 && (displayCount < 6)) {
 			displayBeer(info[0]);
 			displayCount++;
-			console.log("displayCount in checkBeer: ", displayCount);
-			console.log("beer id that was displayed: ", info[0].beer_id);
 			indexToDelete = beerIDs.indexOf(info[0].beer_id);
-			console.log("indexToDelete: ", indexToDelete);
 			beerIDs.splice(indexToDelete, 1);
-			console.log("length of beer array after splice: ", beerIDs.length);
 		};
 	};
 
@@ -85,14 +79,14 @@ $(document).ready(function() {
 
 	getRecentBeers();
 
+	// Set focus to more beer button
 	$('#more').focus();
 
-	$('#more').click(function() {
-		
+
+	// Clear display and show 6 more beers when more beers button is clicked
+	$('#more').click(function() {	
 		$('#recentBeers').empty();
 		displaySixBeers();
-
-
 	});
 
 					
