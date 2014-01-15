@@ -74,6 +74,7 @@ $(document).ready(function() {
 			+ '<p>No. of Reviews: ' + beerDetails.reviews + '</p>'
 			+ '<p>Avg. Score: ' + Number(beerDetails.avg_score).toFixed(2) + '</p>'
 			+ '</div>');
+
 	
 	};
 
