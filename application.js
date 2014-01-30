@@ -38,7 +38,7 @@ $(document).ready(function() {
 		while (displayCount < 6 && (beerIndex < beerIDs.length)) {	
 			getBeerDetails(beerIDs[beerIndex]);
 			beerIndex++;
-			
+			displayCount++
 		};		
 	};
 
@@ -56,12 +56,12 @@ $(document).ready(function() {
 	// Check the beer to see if it has any reviews. If it does, and there are not yet 6 displayed,
 	// then display the beer and update the count.
 	function checkBeer(info) {
-		if (info[0].reviews > 0 && (displayCount < 6)) {
+		//if (info[0].reviews > 0 && (displayCount < 6)) {
 			displayBeer(info[0]);
-			displayCount++;
+		//	displayCount++
 			indexToDelete = beerIDs.indexOf(info[0].beer_id);
 			beerIDs.splice(indexToDelete, 1);
-		};
+		//};
 	};
 
 	// Display the details of a beer on the page
