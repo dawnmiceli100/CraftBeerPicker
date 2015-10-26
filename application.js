@@ -14,8 +14,9 @@ $(document).ready(function() {
 
 	// Get 50 recently consumed beers - only need to display six, but need to account for duplicates and beers that don't have reviews
 	// Store the beer id's in the beerIDs array and then look up details with separate AJAX request
+	// 10/26/15 change to http from https because ssl expired (as per Mike at thebeerspot.com)
 	function getRecentBeers () {
-		$.post("https://www.thebeerspot.com/api/info",
+		$.post("http://www.thebeerspot.com/api/info",
 			{"function" : "drink",
 			"dev_key" : devAPIKey, 
 			"limit" : "200"},
@@ -43,9 +44,10 @@ $(document).ready(function() {
 	};
 
 	//Get the details of a single beer
+	// 10/26/15 change to http from https because ssl expired (as per Mike at thebeerspot.com)
 	function getBeerDetails(id) {
 		$('#hourglass').addClass('hidden');
-		$.post("https://www.thebeerspot.com/api/info",
+		$.post("http://www.thebeerspot.com/api/info",
 				{"function" : "beer",
 				"dev_key" : devAPIKey,
 				"beer_id" : id},
@@ -53,15 +55,11 @@ $(document).ready(function() {
 			);	
 	};
 
-	// Check the beer to see if it has any reviews. If it does, and there are not yet 6 displayed,
-	// then display the beer and update the count.
+	// Display the beer and update the count.
 	function checkBeer(info) {
-		//if (info[0].reviews > 0 && (displayCount < 6)) {
-			displayBeer(info[0]);
-		//	displayCount++
-			indexToDelete = beerIDs.indexOf(info[0].beer_id);
-			beerIDs.splice(indexToDelete, 1);
-		//};
+		displayBeer(info[0]);
+		indexToDelete = beerIDs.indexOf(info[0].beer_id);
+		beerIDs.splice(indexToDelete, 1);
 	};
 
 	// Display the details of a beer on the page
@@ -74,8 +72,6 @@ $(document).ready(function() {
 			+ '<p>No. of Reviews: ' + beerDetails.reviews + '</p>'
 			+ '<p>Avg. Score: ' + Number(beerDetails.avg_score).toFixed(2) + '</p>'
 			+ '</div>');
-
-	
 	};
 
 	getRecentBeers();
@@ -83,17 +79,9 @@ $(document).ready(function() {
 	// Set focus to more beer button
 	$('#more').focus();
 
-
 	// Clear display and show 6 more beers when more beers button is clicked
 	$('#more').click(function() {	
 		$('#recentBeers').empty();
 		displaySixBeers();
-	});
-
-					
+	});					
 });
-
-	
-
-
-
